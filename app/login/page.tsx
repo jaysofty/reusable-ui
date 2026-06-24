@@ -52,6 +52,11 @@ async function handleLogin(data: LoginFormData) {
       // 3. Trigger Error Toast if something goes wrong
       toast.error("Login Failed", {
         description: "Please check your credentials and try again.",
+        style: {
+    background: "#fef2f2",      // Very light red/rose background
+    border: "1px solid #e11d48", // Rose-600 border
+    color: "#e11d48",           // Rose-600 text
+  },
       });
       console.log(error)
     } finally {
