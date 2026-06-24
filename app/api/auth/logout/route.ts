@@ -9,5 +9,5 @@ export async function GET() {
   cookieStore.delete("auth");
 
   // Redirect to the login page after clearing the cookie
-  return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"));
+  return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_BASE_URL || "https://reusable-ui-zeta.vercel.app/"));
 }
