@@ -59,192 +59,69 @@ async function handleLogin(data: LoginFormData) {
     }
   }
 
-  return (
-    <main
-      className="
-      min-h-screen
-      flex
-      items-center
-      justify-center
-      bg-gradient-to-br
-      from-rose-100
-      to-rose-300
-      px-4
-    "
+return (
+  <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-100 to-rose-300 px-4">
+    {/* The form acts as the card container itself */}
+    <form 
+      onSubmit={handleSubmit(handleLogin)} 
+      className="w-full max-w-md rounded-2xl bg-white p-10 shadow-xl flex flex-col"
     >
-      <form onSubmit={handleSubmit(handleLogin)} className="w-full max-w-md rounded-2xl bg-white p-10 shadow-xl">
-  <div
-        className="
-        w-full
-        max-w-md
-        rounded-2xl
-        bg-white
-        p-10
-        shadow-xl
-      "
-      >
-        {/* LOGO */}
-        <div className="flex justify-center mb-8">
-          <Image
-            src="/logo.png"
-            alt="TechCrush"
-            width={120}
-            height={40}
-            className="object-contain"
-          />
-        </div>
-
-        <h1
-          className="
-          text-center
-          text-2xl
-          font-bold
-          text-slate-900
-        "
-        >
-          Welcome!
-        </h1>
-
-        <p
-          className="
-          mt-3
-          text-center
-          text-sm
-          text-slate-500
-        "
-        >
-          Log in to TechCrush and explore your valid tech dreams.
-        </p>
-
-        {/* EMAIL */}
-
-        <div className="mt-8">
-          <label
-            className="
-            text-sm
-            font-semibold
-            text-slate-800
-          "
-          >
-            Email address
-          </label>
-
-          <input
-            type="email"
-            {...register("email")}
-            placeholder="example@gmail.com"
-            className="
-              mt-2
-              w-full
-              rounded-lg
-              bg-slate-300
-              px-4
-              py-3
-              text-sm
-              outline-none
-              focus:ring-2
-              focus:ring-rose-500
-            "
-          />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message as string}</p>}
-        </div>
-
-        {/* PASSWORD */}
-
-        <div className="mt-5">
-          <label
-            className="
-            text-sm
-            font-semibold
-            text-slate-800
-          "
-          >
-            Password
-          </label>
-
-          <div className="relative">
-            <input
-              {...register("password")}
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••••••"
-              className="
-                mt-2
-                w-full
-                rounded-lg
-                bg-slate-300
-                px-4
-                py-3
-                text-sm
-                outline-none
-                focus:ring-2
-                focus:ring-rose-500
-              "
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="
-                absolute
-                right-4
-                top-5
-                text-slate-600
-              "
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message as string}</p>}
-        </div>
-
-        {/* FORGOT */}
-
-        <div className="mt-5 text-right">
-          <button
-            className="
-              text-sm
-              font-medium
-              text-rose-500
-            "
-          >
-            Forgot Password?
-          </button>
-        </div>
-
-        {/* BUTTON */}
-
-        {/* <button
-          onClick={handleLogin}
-          className="
-            mt-10
-            w-full
-            rounded-lg
-            bg-rose-500
-            py-3
-            text-sm
-            font-semibold
-            text-white
-            hover:bg-rose-600
-            transition
-          "
-        >
-
-          Sign in
-
-        </button> */}
-        <LoadingButton
-          isLoading={isLoading}
-          variant="default" // Now type-safe!
-          size="lg" // Now type-safe!
-          type="submit"
-          className="w-full bg-rose-500"
-        >
-          Sign in
-        </LoadingButton>
+      {/* LOGO */}
+      <div className="flex justify-center mb-8">
+        <Image src="/logo.png" alt="TechCrush" width={120} height={40} className="object-contain" />
       </div>
 
-      </form>
-    
-    </main>
-  );
+      <h1 className="text-center text-2xl font-bold text-slate-900">Welcome!</h1>
+      <p className="mt-3 text-center text-sm text-slate-500">
+        Log in to TechCrush and explore your valid tech dreams.
+      </p>
+
+      {/* EMAIL */}
+      <div className="mt-8">
+        <label className="text-sm font-semibold text-slate-800">Email address</label>
+        <input
+          {...register("email")}
+          type="email"
+          placeholder="example@gmail.com"
+          className="mt-2 w-full rounded-lg bg-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-rose-500"
+        />
+        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+      </div>
+
+      {/* PASSWORD */}
+      <div className="mt-5">
+        <label className="text-sm font-semibold text-slate-800">Password</label>
+        <div className="relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••••••"
+            className="mt-2 w-full rounded-lg bg-slate-300 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-rose-500"
+          />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-5 text-slate-600">
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
+        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+      </div>
+
+      {/* FORGOT PASSWORD */}
+      <div className="mt-5 text-right">
+        <button type="button" className="text-sm font-medium text-rose-500">
+          Forgot Password?
+        </button>
+      </div>
+
+      {/* SIGN IN BUTTON */}
+      <LoadingButton
+        isLoading={isLoading}
+        type="submit"
+        size="lg"
+        className="mt-10 w-full bg-rose-500"
+      >
+        Sign in
+      </LoadingButton>
+    </form>
+  </main>
+);
 }
