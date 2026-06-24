@@ -1,26 +1,39 @@
 "use client";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import Image from "next/image";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { toast } from "sonner";
+import { setAuthCookie } from "@/app/actions/auth";
+
+// 1. Define the validation schema
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address."),
+  password: z.string().min(8, "Password must be at least 8 characters long."),
+});
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
-  async function handleLogin() {
+async function handleLogin(data: LoginFormData) {
     setIsLoading(true);
 
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      document.cookie = "auth=true; path=/";
+      await setAuthCookie();
 
       // 2. Trigger the Success Toast
       toast.success("Login Successful", {
@@ -33,6 +46,8 @@ export default function LoginPage() {
       });
 
       router.push("/dashboard");
+      router.refresh()
+      console.log("Email:", data.email);
     } catch (error) {
       // 3. Trigger Error Toast if something goes wrong
       toast.error("Login Failed", {
@@ -57,7 +72,8 @@ export default function LoginPage() {
       px-4
     "
     >
-      <div
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full max-w-md rounded-2xl bg-white p-10 shadow-xl">
+  <div
         className="
         w-full
         max-w-md
@@ -115,6 +131,7 @@ export default function LoginPage() {
 
           <input
             type="email"
+            {...register("email")}
             placeholder="example@gmail.com"
             className="
               mt-2
@@ -129,6 +146,7 @@ export default function LoginPage() {
               focus:ring-rose-500
             "
           />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message as string}</p>}
         </div>
 
         {/* PASSWORD */}
@@ -146,6 +164,7 @@ export default function LoginPage() {
 
           <div className="relative">
             <input
+              {...register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="••••••••••••"
               className="
@@ -175,6 +194,7 @@ export default function LoginPage() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message as string}</p>}
         </div>
 
         {/* FORGOT */}
@@ -214,14 +234,17 @@ export default function LoginPage() {
         </button> */}
         <LoadingButton
           isLoading={isLoading}
-          onClick={handleLogin}
           variant="default" // Now type-safe!
           size="lg" // Now type-safe!
+          type="submit"
           className="w-full bg-rose-500"
         >
           Sign in
         </LoadingButton>
       </div>
+
+      </form>
+    
     </main>
   );
 }
